@@ -5,6 +5,26 @@ import (
 	"os"
 )
 
+func GetFromCSV(filePath string, sheetName string, model interface{}) (*[][]string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	if file == nil {
+		return nil, nil
+	}
+
+	reader := csv.NewReader(file)
+
+	records, err := reader.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return &records, nil
+}
+
 func WriteToCSV(filePath string, model interface{}, includeHeaders bool) error {
 	records, err := StructToStringArray(model, includeHeaders)
 	if err != nil {
