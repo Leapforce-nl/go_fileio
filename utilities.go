@@ -1,7 +1,6 @@
 package fileio
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 
@@ -63,6 +62,12 @@ func StringArrayToStruct(records *[][]string, model interface{}) error {
 						new.FieldByName(fieldName).SetInt(i)
 					}
 					break
+				case reflect.Float64:
+					i, err := strconv.ParseFloat(value, 64)
+					if err == nil {
+						new.FieldByName(fieldName).SetFloat(i)
+					}
+					break
 				}
 
 			}
@@ -99,8 +104,6 @@ func StructToStringArray(model interface{}, includeHeaders bool) (*[][]string, e
 		}
 
 		records = append(records, record)
-
-		fmt.Println(record)
 	}
 
 	for i := 0; i < v.Len(); i++ {
@@ -114,6 +117,9 @@ func StructToStringArray(model interface{}, includeHeaders bool) (*[][]string, e
 				break
 			case reflect.Int:
 				record = append(record, strconv.FormatInt(v1.Field(j).Int(), 10))
+				break
+			case reflect.Float64:
+				record = append(record, strconv.FormatFloat(v1.Field(j).Float(), 'f', 5, 64))
 				break
 			default:
 				record = append(record, "")
