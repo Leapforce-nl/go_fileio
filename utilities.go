@@ -1,6 +1,7 @@
 package fileio
 
 import (
+	"fmt"
 	"reflect"
 	"strconv"
 
@@ -74,21 +75,32 @@ func StringArrayToStruct(records *[][]string, model interface{}) error {
 }
 
 func StructToStringArray(model interface{}, includeHeaders bool) (*[][]string, error) {
-	v := reflect.ValueOf(model)
-	if v.Kind() != reflect.Slice {
-		return nil, &types.ErrorString{"The interface is not a slice."}
+	if reflect.TypeOf(model).Kind() != reflect.Ptr {
+		return nil, &types.ErrorString{"The interface is not a pointer."}
 	}
+
+	v := reflect.ValueOf(model).Elem()
+	if v.Kind() != reflect.Slice {
+		return nil, &types.ErrorString{"The interface is not a pointer to a slice."}
+	}
+
+	structType := reflect.TypeOf(model).Elem().Elem()
 
 	records := [][]string{}
 
 	if includeHeaders {
-		e := reflect.TypeOf(model).Elem()
 		record := []string{}
-		for i := 0; i < e.NumField(); i++ {
-			record = append(record, e.Field(i).Name)
+		for i := 0; i < structType.NumField(); i++ {
+			fieldName := structType.Field(i).Tag.Get("csv")
+			if fieldName == "" {
+				fieldName = structType.Field(i).Name
+			}
+			record = append(record, fieldName)
 		}
 
 		records = append(records, record)
+
+		fmt.Println(record)
 	}
 
 	for i := 0; i < v.Len(); i++ {
