@@ -1,11 +1,82 @@
 package fileio
 
 import (
+	"fmt"
 	"reflect"
 	"strconv"
 
 	types "github.com/Leapforce-nl/go_types"
 )
+
+func StringArrayToStruct(records *[][]string, model interface{}) error {
+	if records == nil {
+		return nil
+	}
+
+	if reflect.TypeOf(model).Kind() != reflect.Ptr {
+		return &types.ErrorString{"The interface is not a pointer."}
+	}
+
+	v := reflect.ValueOf(model).Elem()
+	if v.Kind() != reflect.Slice {
+		return &types.ErrorString{"The interface is not a pointer to a slice."}
+	}
+
+	rv := reflect.ValueOf(model)
+
+	structType := reflect.TypeOf(model).Elem().Elem()
+
+	numFields := structType.NumField()
+
+	fmt.Println(numFields)
+
+	fields := make(map[string]int)
+
+	for index, record := range *records {
+		if index == 0 {
+			for cellIndex, cellValue := range record {
+				fields[cellValue] = cellIndex
+			}
+
+			fmt.Println(fields)
+
+			continue
+		}
+
+		new := reflect.New(structType).Elem()
+
+		for i := 0; i < numFields; i++ {
+			fieldName := structType.Field(i).Name
+			fieldTag := structType.Field(i).Tag.Get("csv")
+
+			if fieldTag == "" {
+				continue
+			}
+			fieldIndex, ok := fields[fieldTag]
+
+			if ok {
+				value := record[fieldIndex]
+
+				switch new.FieldByName(fieldName).Kind() {
+				case reflect.String:
+					new.FieldByName(fieldName).SetString(value)
+					break
+				case reflect.Int:
+					i, err := strconv.ParseInt(value, 10, 64)
+					if err == nil {
+						new.FieldByName(fieldName).SetInt(i)
+					}
+					break
+				}
+
+			}
+		}
+
+		rv.Elem().Set(reflect.Append(rv.Elem(), new))
+	}
+
+	return nil
+}
 
 func StructToStringArray(model interface{}, includeHeaders bool) (*[][]string, error) {
 	v := reflect.ValueOf(model)
@@ -38,7 +109,7 @@ func StructToStringArray(model interface{}, includeHeaders bool) (*[][]string, e
 				record = append(record, strconv.FormatInt(v1.Field(j).Int(), 10))
 				break
 			default:
-				record = append(record, strconv.FormatInt(v1.Field(j).Int(), 10))
+				record = append(record, "")
 				break
 			}
 		}

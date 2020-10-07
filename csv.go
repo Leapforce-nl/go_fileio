@@ -5,24 +5,29 @@ import (
 	"os"
 )
 
-func GetFromCSV(filePath string, sheetName string, model interface{}) (*[][]string, error) {
+func GetFromCSV(filePath string, model interface{}) error {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if file == nil {
-		return nil, nil
+		return nil
 	}
 
 	reader := csv.NewReader(file)
 
 	records, err := reader.ReadAll()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &records, nil
+	err = StringArrayToStruct(&records, model)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func WriteToCSV(filePath string, model interface{}, includeHeaders bool) error {
