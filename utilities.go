@@ -1,7 +1,6 @@
 package fileio
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 
@@ -28,8 +27,6 @@ func StringArrayToStruct(records *[][]string, model interface{}) error {
 
 	numFields := structType.NumField()
 
-	fmt.Println(numFields)
-
 	fields := make(map[string]int)
 
 	for index, record := range *records {
@@ -37,8 +34,6 @@ func StringArrayToStruct(records *[][]string, model interface{}) error {
 			for cellIndex, cellValue := range record {
 				fields[cellValue] = cellIndex
 			}
-
-			fmt.Println(fields)
 
 			continue
 		}
