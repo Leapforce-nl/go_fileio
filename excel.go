@@ -5,8 +5,6 @@ import (
 )
 
 func GetFromExcel(filePath string, sheetName string, model interface{}) error {
-	// will assume the sheet name as "Standard" from the struct name.
-	//colors := []Color{}
 	conn := excel.NewConnecter()
 
 	err := conn.Open(filePath)
