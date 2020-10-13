@@ -2,22 +2,14 @@ package fileio
 
 import (
 	"encoding/csv"
+	"io"
 	"os"
 )
 
-func GetFromCSV(filePath string, model interface{}) error {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return err
-	}
+func GetFromCSVReader(reader io.Reader, model interface{}) error {
+	csvReader := csv.NewReader(reader)
 
-	if file == nil {
-		return nil
-	}
-
-	reader := csv.NewReader(file)
-
-	records, err := reader.ReadAll()
+	records, err := csvReader.ReadAll()
 	if err != nil {
 		return err
 	}
@@ -28,6 +20,19 @@ func GetFromCSV(filePath string, model interface{}) error {
 	}
 
 	return nil
+}
+
+func GetFromCSVFile(filePath string, model interface{}) error {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+
+	if file == nil {
+		return nil
+	}
+
+	return GetFromCSVReader(file, model)
 }
 
 func WriteToCSV(filePath string, model interface{}, includeHeaders bool) error {
