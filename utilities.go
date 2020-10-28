@@ -1,6 +1,7 @@
 package fileio
 
 import (
+	"os"
 	"reflect"
 	"strconv"
 
@@ -131,4 +132,12 @@ func StructToStringArray(model interface{}, includeHeaders bool) (*[][]string, e
 	}
 
 	return &records, nil
+}
+
+func FileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
