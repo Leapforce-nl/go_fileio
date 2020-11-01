@@ -4,7 +4,7 @@ import (
 	excel "github.com/szyhf/go-excel"
 )
 
-func GetFromExcel(filePath string, sheetName string, model interface{}) error {
+func GetFromExcel(filePath string, config *excel.Config, model interface{}) error {
 	conn := excel.NewConnecter()
 
 	err := conn.Open(filePath)
@@ -13,10 +13,7 @@ func GetFromExcel(filePath string, sheetName string, model interface{}) error {
 	}
 	defer conn.Close()
 
-	config := excel.Config{
-		Sheet: sheetName,
-	}
-	rd, err := conn.NewReaderByConfig(&config)
+	rd, err := conn.NewReaderByConfig(config)
 	if err != nil {
 		return err
 	}

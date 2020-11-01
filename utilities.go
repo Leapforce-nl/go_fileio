@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strconv"
 
-	types "github.com/Leapforce-nl/go_types"
+	types "github.com/leapforce-libraries/go_types"
 )
 
 func StringArrayToStruct(records *[][]string, model interface{}) error {
