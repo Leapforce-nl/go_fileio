@@ -36,6 +36,19 @@ func GetFromCSVFile(filePath string, model interface{}) error {
 }
 
 func WriteToCSV(filePath string, model interface{}, includeHeaders bool) error {
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+
+	return WriteToCSVFile(file, model, includeHeaders)
+}
+
+func WriteToCSVFile(file *os.File, model interface{}, includeHeaders bool) error {
+	if file == nil {
+		return nil
+	}
+
 	records, err := StructToStringArray(model, includeHeaders)
 	if err != nil {
 		return err
@@ -43,11 +56,6 @@ func WriteToCSV(filePath string, model interface{}, includeHeaders bool) error {
 
 	if records == nil {
 		return nil
-	}
-
-	file, err := os.Create(filePath)
-	if err != nil {
-		return err
 	}
 
 	w := csv.NewWriter(file)
