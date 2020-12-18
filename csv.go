@@ -9,10 +9,14 @@ import (
 	utilities "github.com/leapforce-libraries/go_utilities"
 )
 
-func GetFromCSVReader(reader io.Reader, model interface{}) *errortools.Error {
+func GetCSVFromReader(reader io.Reader, model interface{}) *errortools.Error {
 	csvReader := csv.NewReader(reader)
 
-	records, err := csvReader.ReadAll()
+	return GetCSVFromCSVReader(csvReader, model)
+}
+
+func GetCSVFromCSVReader(reader *csv.Reader, model interface{}) *errortools.Error {
+	records, err := reader.ReadAll()
 	if err != nil {
 		return errortools.ErrorMessage(err)
 	}
@@ -25,7 +29,7 @@ func GetFromCSVReader(reader io.Reader, model interface{}) *errortools.Error {
 	return nil
 }
 
-func GetFromCSVFile(filePath string, model interface{}) *errortools.Error {
+func GetCSVFromFile(filePath string, model interface{}) *errortools.Error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return errortools.ErrorMessage(err)
@@ -35,7 +39,7 @@ func GetFromCSVFile(filePath string, model interface{}) *errortools.Error {
 		return nil
 	}
 
-	return GetFromCSVReader(file, model)
+	return GetCSVFromReader(file, model)
 }
 
 func WriteToCSV(filePath string, model interface{}, includeHeaders bool) *errortools.Error {
