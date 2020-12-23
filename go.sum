@@ -184,6 +184,8 @@ github.com/leapforce-libraries/go_errortools v0.0.0-20201204210737-d975f1003e2b 
 github.com/leapforce-libraries/go_errortools v0.0.0-20201204210737-d975f1003e2b/go.mod h1:SmFPi+pPS5oWI/PfOv25kuIOBEMgr52dezH+dsmRCfQ=
 github.com/leapforce-libraries/go_excel v0.0.0-20201223154801-299cd70d6b28 h1:uY19HQywwhVyOFdoAjO06QuTOSwKqADLtuYsHOYVjjg=
 github.com/leapforce-libraries/go_excel v0.0.0-20201223154801-299cd70d6b28/go.mod h1:5ZZirENAiYyHmP8AXwgtnyPNxv+fSLKmAsiMSeSmhqM=
+github.com/leapforce-libraries/go_excel v0.0.0-20201223160303-f602189b9301 h1:BIfM7OYvMuk4fd8XG2AypoNc6sMOmZDefbFErWEf0vw=
+github.com/leapforce-libraries/go_excel v0.0.0-20201223160303-f602189b9301/go.mod h1:5ZZirENAiYyHmP8AXwgtnyPNxv+fSLKmAsiMSeSmhqM=
 github.com/leapforce-libraries/go_types v0.0.0-20201116193520-d5f73916424b/go.mod h1:0k0QPi4o2OO3yau759B2U5XIEPbuYTf56QxyF8WdV4o=
 github.com/leapforce-libraries/go_utilities v0.0.0-20201219095534-b51e50abef10 h1:3itoAU94GMBHY9LyW7CqZeSKVI3aUf+n4+4TmM+aIZM=
 github.com/leapforce-libraries/go_utilities v0.0.0-20201219095534-b51e50abef10/go.mod h1:KczL99mKoKqB9SZL07QVbTY2uNMhHKDZRqgaWMU7RKI=
