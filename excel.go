@@ -11,7 +11,7 @@ import (
 	"cloud.google.com/go/civil"
 
 	errortools "github.com/leapforce-libraries/go_errortools"
-	excel "github.com/szyhf/go-excel"
+	excel "github.com/leapforce-libraries/go_excel"
 )
 
 func GetFromExcelFile(filePath string, config *excel.Config, model interface{}) *errortools.Error {
