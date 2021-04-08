@@ -74,12 +74,12 @@ func ParseExcelDate(value string) (*civil.Date, *errortools.Error) {
 		return &date, nil
 	}
 
-	dateInt, err := strconv.Atoi(value)
+	dateFloat64, err := strconv.ParseFloat(value, 64)
 
 	if err == nil {
 		// Excel "day 0" is 1899-12-30
 		t0, _ := time.Parse("2006-01-02", "1899-12-30")
-		date := civil.DateOf(t0.Add(time.Duration(dateInt*24) * time.Hour))
+		date := civil.DateOf(t0.Add(time.Duration(int64(dateFloat64)*24) * time.Hour))
 		return &date, nil
 	}
 
